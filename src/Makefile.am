@@ -52,8 +52,8 @@ geodtest_LDADD = libproj.la
 
 lib_LTLIBRARIES = libproj.la
 
-libproj_la_LDFLAGS = -no-undefined -version-info 20:0:1
-libproj_la_LIBADD = @SQLITE3_LIBS@ @TIFF_LIBS@ @CURL_LIBS@
+libproj_la_LDFLAGS = -no-undefined -version-info 20:0:1 -L/usr/local/cuda/lib64/ -lcuda -lcudart
+libproj_la_LIBADD = @SQLITE3_LIBS@ @TIFF_LIBS@ @CURL_LIBS@ transform_cuda.o
 
 libproj_la_SOURCES = \
 	pj_list.h proj_internal.h \
@@ -240,6 +240,9 @@ libproj_la_SOURCES = \
 	sqlite3_utils.hpp \
 	sqlite3_utils.cpp
 
+NVCC=nvcc
+.cu.o:
+	$(NVCC) -std=c++11 -c -gencode arch=compute_61,code=sm_61 -gencode arch=compute_75,code=sm_75 -shared -Xcompiler -fPIC -o $@ $<
 
 # The sed hack is to please MSVC
 wkt1_parser:

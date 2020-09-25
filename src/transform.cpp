@@ -322,6 +322,13 @@ void pj_Convert_Geocentric_To_Geodetic (GeocentricInfo *gi,
  *                              FUNCTIONS     
  */
 
+namespace cu {
+
+void func(const int grid_size, const int block_size,
+                        const int count, double* x, double* y);
+void func1(int* a);
+}
+
 
 long pj_Set_Geocentric_Parameters (GeocentricInfo *gi, double a, double b) 
 
@@ -1251,6 +1258,11 @@ int pj_transform(
     long point_count, int point_offset,
     double *x, double *y, double *z
 ){
+    printf("=============PROJ cuda==============\n");
+    int a = 10;
+    cu::func1(&a);
+    printf("---------- %d\n", a);
+    
     int       err;
 
     src->ctx->last_errno = 0;
